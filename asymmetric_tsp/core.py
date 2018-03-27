@@ -58,17 +58,14 @@ def two_opt(route, length_function):
 
 
 
-def main(points, length_function):
-    """Contemplation..."""
-    return two_opt(points, length_function)
 
 
 if __name__ == '__main__':
 	'''point_tables is example case'''
-	point_table = [(0,0),(1,2),(10,0),(4,5),(2,0)]
+	point_table = [[0,0],[1,2],[10,0],[4,5],[2,0]]
 	point_size = len(point_table)
 	print("initial :" + str(point_table))
-	bestroute = main(point_table, testlength)
+	bestroute = two_opt(point_table, testlength)
 	print("result  :" + str(bestroute))
 
 
