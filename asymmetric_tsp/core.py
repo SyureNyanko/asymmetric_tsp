@@ -3,6 +3,16 @@ import math
 import time
 import sys
 
+
+class Timeout(object):
+	def __init__(self, limittime, starttime):
+		self.starttime = starttime
+		self.limittime = limittime
+	def get_timeout(self, time):
+		timeout = (time - self.starttime> self.limittime)
+		return timeout
+
+
 def testlength(v1, v2):
 	'''Measure length or cost'''
 	#t = (x1 - x2) * 100
@@ -29,14 +39,18 @@ def calc_route_length(route, f):
 	return ret
 
 
-def two_opt(route, length_function):
+def two_opt(route, length_function, limittime=60):
 	'''Peforms 2-opt search to improve route'''
+	timeout = Timeout(limittime, time.time())
 	bestroute = route
 	l = len(bestroute)
 	bestroute_cost = calc_route_length(bestroute, length_function)
 
 	while(True):
 		flag = True
+		if timeout.get_timeout(time.time()):
+			raise TimeoutError
+
 		for i in range(l-2):
 			i_next = (i + 1)%l
 			for j in range(i + 2, l):
@@ -50,7 +64,6 @@ def two_opt(route, length_function):
 					bestroute_cost = swapped_route_cost
 					bestroute = swapped_route
 					flag = False
-
 		if flag:
 			break
 
